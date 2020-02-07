@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 public class Tabla {
 	String nombre;
-	ArrayList<String> Columna;
+	ArrayList<Atributo> Columna;
 	
 	public Tabla(String nombre) {
 		super();
 		this.nombre = nombre;
-		Columna = new ArrayList<String>();
+		Columna = new ArrayList<Atributo>();
 	}
 
 }
