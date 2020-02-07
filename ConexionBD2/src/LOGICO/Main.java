@@ -3,8 +3,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.io.*;
 
 import SQLCONNECTION.Conexion;
 public class Main {
@@ -28,6 +28,39 @@ public class Main {
 			misTablas.get(find(rsc.getString(1),misTablas)).Columna.add(new Atributo(rsc.getString(2),rsc.getString(3),
 					Integer.toString(rsc.getInt(4))));
 		}
+		
+		FileWriter fichero = null;
+		PrintWriter pw = null;
+		
+		try {
+			fichero = new FileWriter("data.txt");
+			pw = new PrintWriter(fichero);
+			for (Tabla tabla : misTablas) {
+				pw.println("CREATE TABLE " + tabla.nombre + "(");
+				for (Atributo atributo : tabla.Columna) {
+					if (atributo.size.equalsIgnoreCase("0")) {
+						pw.println(atributo.nombre +" "+ atributo.tipo+",");
+						
+					}
+					else {
+						pw.println(atributo.nombre + " nvarchar(" + atributo.size + "),");
+					}
+				}
+				pw.println(");\n\n");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			try {
+				if (null != fichero)
+					fichero.close();
+			} catch (Exception e2) {
+				// TODO: handle exception
+				e2.printStackTrace();
+			}
+		}
+
 		for(int i =0; i < misTablas.size();i++) {
 			System.out.println(misTablas.get(i).nombre);
 			for(int j =0; j < misTablas.get(i).Columna.size(); j ++) {
